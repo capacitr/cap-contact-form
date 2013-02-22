@@ -3,6 +3,6 @@ from views import ContactUsView
 
 
 urlpatterns = patterns('',
-    url(r'^$', ContactUsView.as_view(),  name='get_events'),
+    url(r'^$', ContactUsView.as_view(),  name='contact_us'),
 )
 
