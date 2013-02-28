@@ -61,7 +61,6 @@ def thank_you(req):
 def thank_you_qc(req):
     return direct_to_template(req, 'thank-you-qc.html')
 
-@csrf_exempt
 def contact(req):
     if req.method == 'POST':
         procedures = req.POST.getlist('procedures')
@@ -166,7 +165,6 @@ def contact(req):
 
 from django.template.loader import render_to_string
 
-@csrf_exempt
 def referral(req):
     message = ""
 
