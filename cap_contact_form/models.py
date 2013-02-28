@@ -51,7 +51,7 @@ FORM_TEMPLATES = (
     ("embed_promo_holiday.html", "Trivia Form"),
 )
 
-class Form(DefaultModel):
+class Form(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     form_template = models.CharField(max_length=255, choices=FORM_TEMPLATES)
