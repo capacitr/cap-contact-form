@@ -9,6 +9,8 @@ from forms import ContactForm
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+import models
+
 class ContactUsView(TemplateView):
     template_name = 'contact_us.html'
 
