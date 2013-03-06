@@ -45,6 +45,9 @@ class ContactUsView(TemplateView):
         else:
             messages.add_message(self.request, messages.INFO, 'You didn\'t fill out the form correctly.')
 
+        if self.request.POST.get("next", None):
+            return redirect(self.request.POST.get("next"))
+
         return redirect(reverse('contact_us'))
 
 def get_form(request, form_slug):
