@@ -1,5 +1,5 @@
-# Create your views here.
 
+from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import send_mail
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
@@ -18,6 +18,9 @@ class ContactUsView(TemplateView):
 
         contact_form = ContactForm(self.request.POST)
         if contact_form.is_valid():
+
+            if not settings.CONTACT_EMAILS:
+                raise ImproperlyConfigured
 
             to = settings.CONTACT_EMAILS
 
