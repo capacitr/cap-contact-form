@@ -1,5 +1,10 @@
 from django.db import models
 
+CONTACT_BY = (
+    ('email', 'email'),
+    ('phone', 'phone')
+    )
+
 SOURCE_CHOICES = (
     ('quick-contact', 'quick-contact'),
     ('dedicated-contact', 'dedicated-contact'),
