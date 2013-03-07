@@ -1,3 +1,4 @@
+from django.contrib import admin
 
 def export_as_csv_action(description="Export selected objects as CSV file",
                          fields=None, exclude=None, header=True):
@@ -33,10 +34,10 @@ def export_as_csv_action(description="Export selected objects as CSV file",
     return export_as_csv
 
 class ContactAdmin(admin.ModelAdmin):
-    actions = [export_as_csv_action()]
+    #actions = [export_as_csv_action()]
 
     def show_procedures(obj):
         return "%s%s" % (obj.procedure, obj.procedures_long,)
 
-    list_display = ['date_created', 'name', 'phone', 'email', 'message', show_procedures, 'source', 'location']
+    list_display = ['date_created', 'name', 'phone', 'email', 'message', 'source', 'location']
 
