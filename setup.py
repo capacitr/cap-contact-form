@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='CapContactForm',
-    version='0.2.0',
+    version='0.3.0',
     author='Patrick Aubin',
     author_email='patrick@capacitr.com',
     packages=['cap_contact_form'],
