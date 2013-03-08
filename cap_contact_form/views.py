@@ -53,7 +53,7 @@ class ContactUsView(TemplateView):
         if self.request.POST.get("next", None):
             return redirect(self.request.POST.get("next"))
 
-        return redirect(reverse('contact_us'))
+        return redirect(request.META["HTTP_REFERER"])
 
 def get_form(request, form_slug):
     form = get_object_or_404(Form, slug=form_slug)
