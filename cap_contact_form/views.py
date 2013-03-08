@@ -26,11 +26,13 @@ class ContactUsView(TemplateView):
 
             name = contact_form.cleaned_data.get("name", "newsletter")
             from_email = contact_form.cleaned_data.get("from_email", None)
+            phone = self.request.POST.get("phone", "")
             message = contact_form.cleaned_data.get("message", "sign me up for the newsletter")
 
             message = render_to_string('email.html',  {
                 'message' : message, 
-                'name' : name
+                'name' : name,
+                'phone' : phone
             })
 
             message = name + " says\n\r\n\r" + message 
