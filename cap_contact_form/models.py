@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils import simplejson
+
 CONTACT_BY = (
     ('email', 'email'),
     ('phone', 'phone')
@@ -11,6 +13,18 @@ SOURCE_CHOICES = (
     ('blog-post', 'blog-post'),
     ('referral', 'referral')
     )
+
+FORM_TEMPLATES = (
+    ("embed_basic.html", "Basic Contact Form"),
+    ("embed_promo_holiday.html", "Trivia Form"),
+)
+
+class Source(models.Model):
+    source = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.source
 
 class Contact(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
@@ -26,6 +40,7 @@ class Contact(models.Model):
     message = models.TextField(blank=True, null=True)
 
     source = models.CharField(max_length=255, choices=SOURCE_CHOICES, blank=True, default="dedicated-contact")
+
 #    procedure = models.CharField(max_length=255)
 #    procedures_long = models.CharField(max_length=255, blank=True, null=True)
 #
@@ -39,52 +54,44 @@ class Contact(models.Model):
 #    source = models.CharField(max_length=255, choices=SOURCE_CHOICES, blank=True, default="dedicated-contact")
 #
 #    location = models.CharField(max_length=255, blank=True)
-#
 
-class Attribute(models.Model):
-    post = models.ForeignKey('cap_contact_form.Contact')
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100)
-    value = models.CharField(max_length=255)
+    attributes = models.TextField(blank=True)
 
-    class Meta:
-        unique_together = ('post', 'slug')
+    @property
+    def json_attributes(self):
+        return simplejson.loads(self.attributes)
 
+    def get_attribute(self, val):
+        attributes = self.json_attributes
+        return attributes.get(val, None)
 
-FORM_TEMPLATES = (
-    ("embed_basic.html", "Basic Contact Form"),
-    ("embed_promo_holiday.html", "Trivia Form"),
-)
+class Email(models.Model):
+    email = models.EmailField(max_length=255)
 
-class Form(models.Model):
+    def __unicode__(self):
+        return self.email
+
+class ContactForm(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
-    form_template = models.CharField(max_length=255, choices=FORM_TEMPLATES)
+    template = models.ForeignKey("dbtemplates.Template")
+    to = models.ManyToManyField(Email)
 
     message = models.TextField(max_length=255, blank=True, default="")
     thank_you_message = models.TextField(blank=True)
-    form_type = models.CharField(max_length=255, choices=SOURCE_CHOICES, default="blog-post")
+    form_type = models.ForeignKey("Source")
+
+    height = models.IntegerField(blank=True)
+    width = models.IntegerField(blank=True)
 
     @property
     def embed_code(self):
-        code = ""
-        try:
-            sizes = {
-                "embed_basic.html" : (740, 250),
-                "embed_promo_holiday.html" : (740, 250),
-            }
-            code = """<iframe style="border: none; overflow: hidden;" src="http://www.drdayan.com%s" frameborder="0" scrolling="no" width="%s" height="%s"></iframe>""" % (self.get_absolute_url(), sizes[self.form_template][0], sizes[self.form_template][1])
-        except KeyError:
-            pass
-
+        url, height, width = self.template.name, self.height, self.width
+        code = """<iframe style="border: none; 
+        overflow: hidden;" src="%s" frameborder="0" 
+        scrolling="no" width="%s" height="%s"></iframe>""" % (url, width, height)
         return code 
 
     def __unicode__(self):
         return "%s" % self.name
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ("drdayan.views.get_form", (), {
-            "form_slug" : self.slug 
-        })
 

@@ -1,0 +1,21 @@
+- fields:
+    source: test
+    slug: test
+  model: cap_contact_form.source
+  pk: 1
+- fields:
+    date_created: 2012-11-08 17:20:16
+    name: test
+    address: test
+    city: test
+    state: test
+    zip_code: zip
+    phone: phone
+    email: test@test.com
+    message: test
+    source: 1
+    attributes: "{\"test1\" : \"test\", 
+\"test2\" : \"test2\"}"
+  model: cap_contact_form.contact
+  pk: 1
+
