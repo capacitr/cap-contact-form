@@ -1,4 +1,5 @@
 from django.contrib import admin
+from models import Contact
 
 
 class ContactAdmin(admin.ModelAdmin):
@@ -8,4 +9,6 @@ class ContactAdmin(admin.ModelAdmin):
         return "%s%s" % (obj.procedure, obj.procedures_long,)
 
     list_display = ['date_created', 'name', 'phone', 'email', 'message', 'source', 'location']
+
+admin.site.register(Contact, ContactAdmin)
 
