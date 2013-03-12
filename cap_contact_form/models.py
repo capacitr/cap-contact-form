@@ -44,9 +44,9 @@ class ContactForm(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
-    template = models.ForeignKey("dbtemplates.Template")
-    submission_template = models.ForeignKey("dbtemplates.Template")
-    email_template = models.ForeignKey("dbtemplates.Template")
+    template = models.ForeignKey("dbtemplates.Template", related_name="templates")
+    submission_template = models.ForeignKey("dbtemplates.Template", related_name="submission_templates")
+    email_template = models.ForeignKey("dbtemplates.Template", related_name="email_templates")
     email_subject_line = models.CharField(max_length=255)
 
     to = models.ManyToManyField("AdminEmail")

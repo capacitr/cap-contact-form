@@ -37,8 +37,6 @@ class TestContactForm(TestCase):
             'name' : 'test',
             'slug' : 'test',
             'template' : template,
-            'message' : 'test1',
-            'thank_you_message' : 'thank_you',
             'form_type' : source,
             'height' : '100',
             'width' : '200'
@@ -94,7 +92,7 @@ class TestContactForm(TestCase):
 
     def test_source(self):
         source = Source.objects.get(slug="test")
-
+        assert source != None, True
     
     def test_render_contact_form(self):
         template_params = {
@@ -110,4 +108,4 @@ class TestContactForm(TestCase):
 
 class TestContactView(TestCase):
     def setUp(self):
-
+        pass
