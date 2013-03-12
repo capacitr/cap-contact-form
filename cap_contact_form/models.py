@@ -2,23 +2,6 @@ from django.db import models
 
 from django.utils import simplejson
 
-CONTACT_BY = (
-    ('email', 'email'),
-    ('phone', 'phone')
-    )
-
-SOURCE_CHOICES = (
-    ('quick-contact', 'quick-contact'),
-    ('dedicated-contact', 'dedicated-contact'),
-    ('blog-post', 'blog-post'),
-    ('referral', 'referral')
-    )
-
-FORM_TEMPLATES = (
-    ("embed_basic.html", "Basic Contact Form"),
-    ("embed_promo_holiday.html", "Trivia Form"),
-)
-
 class Source(models.Model):
     source = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
@@ -41,20 +24,6 @@ class Contact(models.Model):
 
     source = models.CharField(max_length=255, choices=SOURCE_CHOICES, blank=True, default="dedicated-contact")
 
-#    procedure = models.CharField(max_length=255)
-#    procedures_long = models.CharField(max_length=255, blank=True, null=True)
-#
-#    contact_by = models.CharField(max_length=255, choices=CONTACT_BY)
-#    best_call_time = models.DateTimeField(blank=True)
-#    hear_about_us = models.CharField(max_length=255, default="", blank=True)
-#    message = models.TextField()
-#
-#    date_contacted = models.DateTimeField(null=True, blank=True)
-#    call_message = models.TextField(blank=True)
-#    source = models.CharField(max_length=255, choices=SOURCE_CHOICES, blank=True, default="dedicated-contact")
-#
-#    location = models.CharField(max_length=255, blank=True)
-
     attributes = models.TextField(blank=True)
 
     @property
@@ -75,7 +44,7 @@ class ContactForm(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     template = models.ForeignKey("dbtemplates.Template")
-    to = models.ManyToManyField(Email)
+    to = models.ManyToManyField("Email")
 
     message = models.TextField(max_length=255, blank=True, default="")
     thank_you_message = models.TextField(blank=True)

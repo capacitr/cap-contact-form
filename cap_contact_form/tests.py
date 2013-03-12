@@ -92,3 +92,15 @@ class TestContactForm(TestCase):
     def test_source(self):
         source = Source.objects.get(slug="test")
 
+    
+    def test_render_contact_form(self):
+        template_params = {
+            "name" : "page12.html",
+            "body" : """
+            {% load forms %}
+            {% render_form slug=form.slug as form %}
+            <form method="post" action="page12.html">
+            <input type="submit"/>
+            </form>
+            """
+            }
