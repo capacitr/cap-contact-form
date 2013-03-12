@@ -8,6 +8,7 @@ settings.configure(DEBUG=True,
                         'ENGINE': 'django.db.backends.sqlite3',
                     }
                 },
+               TEMPLATE_LOADERS=('dbtemplates.loader.Loader',),
                ROOT_URLCONF='cap_contact_form.urls',
                FIXTURE_DIRS='cap_contact_form/fixtures',
                SITE_ID='1',

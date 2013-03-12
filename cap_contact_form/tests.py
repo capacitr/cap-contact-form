@@ -10,6 +10,7 @@ from django.test import TestCase
 from dbtemplates.models import Template
 from models import ContactForm, Source, Contact
 from django.utils import simplejson
+from django.test.client import Client
 
 class TestContactForm(TestCase):
     fixtures = [
@@ -108,4 +109,15 @@ class TestContactForm(TestCase):
 
 class TestContactView(TestCase):
     def setUp(self):
-        pass
+        self.client = Client()
+    
+    def test_contact_page(self):
+        template_params = {
+                "name" : "page12.html",
+                "content" : "test"
+                }
+        template = Template(**template_params)
+        template.save()
+
+        response = self.client.get(template.name)
+        assert response.content, "test"
