@@ -57,6 +57,8 @@ class TestContactForm(TestCase):
         assert contact.get_attribute("test1") == "test", True
 
     def test_contact_attributes(self):
+        source = Source.objects.get(slug="test")
+
         attributes = {
                 'procedure' : 'test',
                 'procedures_long' : 'long',
@@ -77,6 +79,7 @@ class TestContactForm(TestCase):
                 'phone' : 'phone',
                 'email' : 'email',
                 'message' : 'test',
+                'source' : source,
                 'attributes' : simplejson.dumps(attributes)
                 }
 
@@ -104,3 +107,7 @@ class TestContactForm(TestCase):
             </form>
             """
             }
+
+class TestContactView(TestCase):
+    def setUp(self):
+

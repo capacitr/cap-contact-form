@@ -22,7 +22,7 @@ class Contact(models.Model):
     email = models.CharField(max_length=255, blank=True, null=True)
     message = models.TextField(blank=True, null=True)
 
-    source = models.CharField(max_length=255, choices=SOURCE_CHOICES, blank=True, default="dedicated-contact")
+    source = models.ForeignKey("Source") 
 
     attributes = models.TextField(blank=True)
 
@@ -30,11 +30,11 @@ class Contact(models.Model):
     def json_attributes(self):
         return simplejson.loads(self.attributes)
 
-    def get_attribute(self, val):
+    def get_attribute(self, name):
         attributes = self.json_attributes
-        return attributes.get(val, None)
+        return attributes.get(name, None)
 
-class Email(models.Model):
+class AdminEmail(models.Model):
     email = models.EmailField(max_length=255)
 
     def __unicode__(self):
@@ -43,11 +43,14 @@ class Email(models.Model):
 class ContactForm(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
-    template = models.ForeignKey("dbtemplates.Template")
-    to = models.ManyToManyField("Email")
 
-    message = models.TextField(max_length=255, blank=True, default="")
-    thank_you_message = models.TextField(blank=True)
+    template = models.ForeignKey("dbtemplates.Template")
+    submission_template = models.ForeignKey("dbtemplates.Template")
+    email_template = models.ForeignKey("dbtemplates.Template")
+    email_subject_line = models.CharField(max_length=255)
+
+    to = models.ManyToManyField("AdminEmail")
+
     form_type = models.ForeignKey("Source")
 
     height = models.IntegerField(blank=True)
